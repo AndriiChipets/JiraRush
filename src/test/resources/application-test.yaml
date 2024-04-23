@@ -12,13 +12,11 @@ spring:
     generate-ddl: false
     hibernate:
       ddl-auto: none
-      dialect: org.hibernate.dialect.H2Dialect
 
   datasource:
-    driver: ${TEST_DRIVER}
     url: ${TEST_DB_URL}
     username: ${TEST_DB_USER}
     password: ${TEST_DB_PASSWORD}
 
   liquibase:
-    enabled: false
+    changeLog: "classpath:db/changelog-test.sql"
