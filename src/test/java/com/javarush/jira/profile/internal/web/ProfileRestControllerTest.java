@@ -20,6 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ProfileRestControllerTest extends AbstractControllerTest {
 
     private final static String REST_URL_PROFILE = BaseHandler.REST_URL + "/profile";
+    private final static String INCORRECT_REST_URL_PROFILE = "/incorrect-rest-url";
 
     @Autowired
     private ProfileRepository profileRepository;
@@ -42,6 +43,14 @@ class ProfileRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(PROFILE_TO_MATCHER.contentJson(GUEST_PROFILE_EMPTY_TO));
+    }
+
+    @Test
+    @WithUserDetails(value = USER_MAIL)
+    void getWithWrongPath() throws Exception {
+        perform(MockMvcRequestBuilders.get(INCORRECT_REST_URL_PROFILE))
+                .andDo(print())
+                .andExpect(status().isNotFound());
     }
 
     @Test
