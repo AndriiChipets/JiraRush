@@ -41,6 +41,8 @@ public class TaskTestData {
     public static final String CANCELED = "canceled";
     public static final String TASK_DEVELOPER = "task_developer";
     public static final String TASK_REVIEWER = "task_reviewer";
+    public static final String CORRECT_TASK_TAG_LESS_THAN_32_SYMBOLS = "Correct task tag";
+    public static final String INCORRECT_TASK_TAG_MORE_THAN_32_SYMBOLS = "Incorrect task tag Incorrect task tag Incorrect task tag";
 
     public static final TaskTo taskTo1 = new TaskTo(TASK1_ID, "epic-" + TASK1_ID, "Data", "epic", "in_progress", null, PROJECT1_ID, SPRINT1_ID);
     public static final TaskTo taskTo2 = new TaskTo(TASK2_ID, "epic-" + TASK2_ID, "Trees", "epic", "in_progress", null, PROJECT1_ID, SPRINT1_ID);
