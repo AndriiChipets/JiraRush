@@ -12,6 +12,10 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import static com.javarush.jira.bugtracking.ObjectType.TASK;
 import static com.javarush.jira.bugtracking.task.TaskController.REST_URL;
 import static com.javarush.jira.bugtracking.task.TaskService.CANNOT_ASSIGN;
@@ -32,12 +36,14 @@ class TaskControllerTest extends AbstractControllerTest {
     private static final String ACTIVITIES_REST_URL = REST_URL + "/activities";
     private static final String ACTIVITIES_REST_URL_SLASH = REST_URL + "/activities/";
     private static final String CHANGE_STATUS = "/change-status";
+    private static final String ADD_TASK_TAG = "/tags";
 
     private static final String PROJECT_ID = "projectId";
     private static final String SPRINT_ID = "sprintId";
     private static final String STATUS_CODE = "statusCode";
     private static final String USER_TYPE = "userType";
     private static final String ENABLED = "enabled";
+    private static final String TASK_TAG = "tag";
 
     @Autowired
     private TaskRepository taskRepository;
@@ -589,5 +595,26 @@ class TaskControllerTest extends AbstractControllerTest {
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.detail", is(String
                         .format("Not found assignment with userType=%s for task {%d} for user {%d}", TASK_DEVELOPER, TASK1_ID, ADMIN_ID))));
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_MAIL)
+    void addTaskTagWhenTagCorrect() throws Exception {
+        final Set<String> expectedTags = new HashSet<>(taskRepository.getExisted(TASK1_ID).getTags());
+        expectedTags.add(CORRECT_TASK_TAG_LESS_THAN_32_SYMBOLS);
+        perform(MockMvcRequestBuilders.patch(TASKS_REST_URL_SLASH + TASK1_ID + ADD_TASK_TAG)
+                .param(TASK_TAG, CORRECT_TASK_TAG_LESS_THAN_32_SYMBOLS))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+        assertEquals(expectedTags, taskRepository.getExisted(TASK1_ID).getTags());
+    }
+
+    @Test
+    @WithUserDetails(value = ADMIN_MAIL)
+    void addTaskTagWhenTagIncorrect() throws Exception {
+        perform(MockMvcRequestBuilders.patch(TASKS_REST_URL_SLASH + TASK1_ID + ADD_TASK_TAG)
+                .param(TASK_TAG, INCORRECT_TASK_TAG_MORE_THAN_32_SYMBOLS))
+                .andDo(print())
+                .andExpect(status().isConflict());
     }
 }

@@ -1,12 +1,20 @@
 ---------  users ----------------------
-delete from USER_ROLE;
-delete from CONTACT;
-delete from PROFILE;
-delete from ACTIVITY;
-delete from TASK;
-delete from SPRINT;
-delete from PROJECT;
-delete from USERS;
+delete
+from USER_ROLE;
+delete
+from CONTACT;
+delete
+from PROFILE;
+delete
+from ACTIVITY;
+delete
+from TASK;
+delete
+from SPRINT;
+delete
+from PROJECT;
+delete
+from USERS;
 
 insert into USERS (EMAIL, PASSWORD, FIRST_NAME, LAST_NAME, DISPLAY_NAME)
 values ('user@gmail.com', '{noop}password', 'userFirstName', 'userLastName', 'userDisplayName'),
@@ -56,6 +64,10 @@ values ('Data', 'epic', 'in_progress', 1, 1, '2023-05-15 09:05:10'),
        ('task-5', 'task', 'todo', 2, 5, '2023-06-14 09:28:10'),
        ('task-6', 'task', 'done', 2, 5, '2023-06-14 09:28:10'),
        ('task-7', 'task', 'canceled', 2, 5, '2023-06-14 09:28:10');
+
+insert into TASK_TAG (TASK_ID, TAG)
+values (1, 'Tag1'),
+       (1, 'Tag2');
 
 insert into ACTIVITY(AUTHOR_ID, TASK_ID, UPDATED, COMMENT, TITLE, DESCRIPTION, ESTIMATE, TYPE_CODE, STATUS_CODE,
                      PRIORITY_CODE)
