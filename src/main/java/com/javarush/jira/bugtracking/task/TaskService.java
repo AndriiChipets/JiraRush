@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static com.javarush.jira.bugtracking.ObjectType.TASK;
@@ -32,6 +33,10 @@ import static com.javarush.jira.ref.ReferenceService.getRefTo;
 public class TaskService {
     static final String CANNOT_ASSIGN = "Cannot assign as %s to task with status=%s";
     static final String CANNOT_UN_ASSIGN = "Cannot unassign as %s from task with status=%s";
+    static final String IN_PROGRESS_STATUS = "in_progress";
+    static final String READY_FOR_REVIEW_STATUS = "ready_for_review";
+    static final String DONE_STATUS = "done";
+    static final String STATUS_ABSENT = "Task %s doesn't have %s status";
 
     private final Handlers.TaskExtHandler handler;
     private final Handlers.ActivityHandler activityHandler;
@@ -146,5 +151,35 @@ public class TaskService {
         Task task = handler.getRepository().getExisted(taskId);
         task.getTags().add(tag);
         handler.getRepository().save(task);
+    }
+
+    public Long calcWorkingTimeInMinute(Task task) {
+        return calcTimePeriodBetweenStatuses(task, IN_PROGRESS_STATUS, READY_FOR_REVIEW_STATUS);
+    }
+
+    public Long calcTestingTimeInMinute(Task task) {
+        return calcTimePeriodBetweenStatuses(task, READY_FOR_REVIEW_STATUS, DONE_STATUS);
+    }
+
+    private Long calcTimePeriodBetweenStatuses(Task task, String startStatusCode, String endStatusCode) {
+        LocalDateTime startTime = null;
+        LocalDateTime endTime = null;
+        List<Activity> activities = task.getActivities();
+        if (activities == null || activities.isEmpty()) {
+            throw new IllegalArgumentException(String.format("Task %s doesn't have any activities", task.getTitle()));
+        }
+        for (Activity activity : activities) {
+            if (activity.getStatusCode() != null && activity.getStatusCode().equals(startStatusCode)) {
+                startTime = activity.getUpdated();
+            } else if (activity.getStatusCode() != null && activity.getStatusCode().equals(endStatusCode)) {
+                endTime = activity.getUpdated();
+            }
+        }
+        if (startTime == null || endTime == null) {
+            throw new IllegalArgumentException
+                    (startTime == null ? String.format(STATUS_ABSENT, task.getTitle(), startStatusCode)
+                            : String.format(STATUS_ABSENT, task.getTitle(), endStatusCode));
+        }
+        return ChronoUnit.MINUTES.between(startTime, endTime);
     }
 }
