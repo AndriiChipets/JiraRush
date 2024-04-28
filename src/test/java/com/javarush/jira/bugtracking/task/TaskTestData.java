@@ -28,6 +28,10 @@ public class TaskTestData {
     public static final long TODO_TASK_ID = 5;
     public static final long DONE_TASK_ID = 6;
     public static final long CANCELED_TASK_ID = 7;
+    public static final long ALL_STATUSES_TASK_ID = 8;
+    public static final long NO_ACTIVITIES_TASK_ID = 9;
+    public static final long NO_DONE_STATUS_TASK_ID = 10;
+    public static final long NO_READY_FOR_REVIEW_STATUS_TASK_ID = 11;
     public static final long SPRINT1_ID = 1;
     public static final long PROJECT1_ID = 1;
     public static final long ACTIVITY1_ID = 1;

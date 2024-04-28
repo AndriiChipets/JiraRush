@@ -153,11 +153,11 @@ public class TaskService {
         handler.getRepository().save(task);
     }
 
-    public Long calculateWorkingTimeInMinute(Task task) {
+    public Long calcWorkingTimeInMinute(Task task) {
         return calcTimePeriodBetweenStatuses(task, IN_PROGRESS_STATUS, READY_FOR_REVIEW_STATUS);
     }
 
-    public Long calculateTestingTimeInMinute(Task task) {
+    public Long calcTestingTimeInMinute(Task task) {
         return calcTimePeriodBetweenStatuses(task, READY_FOR_REVIEW_STATUS, DONE_STATUS);
     }
 
@@ -166,7 +166,7 @@ public class TaskService {
         LocalDateTime endTime = null;
         List<Activity> activities = task.getActivities();
         if (activities == null || activities.isEmpty()) {
-            throw new IllegalArgumentException(String.format("Task %s doesn't have any activities", task));
+            throw new IllegalArgumentException(String.format("Task %s doesn't have any activities", task.getTitle()));
         }
         for (Activity activity : activities) {
             if (activity.getStatusCode() != null && activity.getStatusCode().equals(startStatusCode)) {
@@ -177,8 +177,8 @@ public class TaskService {
         }
         if (startTime == null || endTime == null) {
             throw new IllegalArgumentException
-                    (startTime == null ? String.format(STATUS_ABSENT, task, startStatusCode)
-                            : String.format(STATUS_ABSENT, task, endStatusCode));
+                    (startTime == null ? String.format(STATUS_ABSENT, task.getTitle(), startStatusCode)
+                            : String.format(STATUS_ABSENT, task.getTitle(), endStatusCode));
         }
         return ChronoUnit.MINUTES.between(startTime, endTime);
     }

@@ -63,7 +63,11 @@ values ('Data', 'epic', 'in_progress', 1, 1, '2023-05-15 09:05:10'),
        ('task-4', 'task', 'ready_for_review', 2, 5, '2023-06-14 09:28:10'),
        ('task-5', 'task', 'todo', 2, 5, '2023-06-14 09:28:10'),
        ('task-6', 'task', 'done', 2, 5, '2023-06-14 09:28:10'),
-       ('task-7', 'task', 'canceled', 2, 5, '2023-06-14 09:28:10');
+       ('task-7', 'task', 'canceled', 2, 5, '2023-06-14 09:28:10'),
+       ('task-8', 'task', 'in_progress', 2, 5, '2024-04-28 12:00:00'),
+       ('task-9', 'task', 'in_progress', 2, 5, '2024-04-28 12:00:00'),
+       ('task-10', 'task', 'in_progress', 2, 5, '2024-04-28 12:00:00'),
+       ('task-11', 'task', 'in_progress', 2, 5, '2024-04-28 12:00:00');
 
 insert into TASK_TAG (TASK_ID, TAG)
 values (1, 'Tag1'),
@@ -76,12 +80,18 @@ values (1, 1, '2023-05-15 09:05:10', null, 'Data', null, 3, 'epic', 'in_progress
        (1, 1, '2023-05-15 14:05:10', null, 'Data', null, 4, null, null, null),
        (1, 2, '2023-05-15 12:05:10', null, 'Trees', 'Trees desc', 4, 'epic', 'in_progress', 'normal'),
 ---test data for task time counting (between tasks 'ready_for_review' -> 'in_progress' and  'done' -> 'ready_for_review') ---
-       (1, 3, '2024-04-28 12:30:10', null, 'for time counting', 'for time counting - task in_progress', 1, null,
+       (1, 8, '2024-04-28 12:30:00', null, 'for time counting', 'for time counting - task in_progress', 1, null,
         'in_progress', 'low'),
-       (1, 3, '2024-04-29 11:30:10', null, 'for time counting', 'for time counting - task ready_for_review', 1, null,
+       (1, 8, '2024-04-28 15:30:00', null, 'for time counting', 'for time counting - task ready_for_review', 1, null,
         'ready_for_review', 'low'),
-       (1, 3, '2024-04-30 13:30:10', null, 'for time counting', 'for time counting - task done', 1, null, 'done',
-        'low');
+       (1, 8, '2024-04-28 18:00:00', null, 'for time counting', 'for time counting - task done', 1, null, 'done',
+        'low'),
+       (1, 10, '2024-04-28 18:00:00', null, 'for time counting', 'for time counting - task done', 1, null,
+        'ready_for_review', 'low'),
+       (1, 11, '2024-04-28 18:00:00', null, 'for time counting', 'for time counting - task done', 1, null,
+        'done', 'low'),
+       (1, 11, '2024-04-28 18:00:00', null, 'for time counting', 'for time counting - task done', 1, null,
+        null, 'low');
 
 insert into USER_BELONG (OBJECT_ID, OBJECT_TYPE, USER_ID, USER_TYPE_CODE, STARTPOINT, ENDPOINT)
 values (1, 2, 2, 'task_developer', '2023-06-14 08:35:10', '2023-06-14 08:55:00'),
