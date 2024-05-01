@@ -16,8 +16,13 @@ docker run -d -p 8081:8080 --name=jira_app jira_img
 
 # Docker DB connection 
 IP: 172.17.0.2
-# Docker jira_app container host
+# Dockerfile jira_app container host
 localhost:8081
+# Dockerfile + Docker-compose jira_app container host
+localhost:8082
+
+docker-compose up -d
+docker-compose --env-file ./localhost.env up -d
 
 1. Done
 2. Done
@@ -28,3 +33,4 @@ localhost:8081
 7. Done
 8. Done
 9. Done
+10. Done
