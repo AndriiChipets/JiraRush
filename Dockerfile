@@ -1,8 +1,9 @@
 FROM maven:3.8.5-openjdk-17 AS build
 COPY . .
-RUN mvn clean install -DskipTests
+RUN mvn clean install -D skipTests
 
 FROM openjdk:17-jdk-alpine
+
 COPY --from=build /target/jira-1.0.jar jira.jar
 COPY ./localhost.env localhost.env
 COPY ./resources /resources
