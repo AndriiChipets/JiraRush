@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  nginx:
+    container_name: jira-rush-nginx
+    restart: always
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./config/:/etc/nginx/config
+
+  postgres-db:
+    container_name: jira-rush-db
+    restart: always
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+
+  app:
+    container_name: jira-rush-app
+    restart: always
+    ports:
+      - "8082:8080"
+    build:
+      context: .
+    command: mvn clean install -D skipTests
+    depends_on:
+      - nginx
+      - postgres-db
+    environment:
+      SPRING_DATASOURCE_URL: ${DB_URL}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
