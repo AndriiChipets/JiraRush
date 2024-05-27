@@ -1,25 +1,32 @@
-1. Done
-2. Done
-3. Done
-4. Done
-5. Done
-6. Done
-7. Done
-8. Done
-9. Done
-# PLease, replace in localhost.env file DB_URL to fallowing configuration:
-DB_URL=jdbc:postgresql://172.17.0.2:5432/jira
-# In order to create image, please execute following script:
-docker build -t jira_img .
-# In order to create and run docker container, please execute following script:
-docker run -d -p 8081:8080 --name=jira_app jira_img
-# URL to check that application is running:
-localhost:8081
+Task management application, such Jira or Trello.
 
-10. Done
-# PLease, replace in localhost.env file DB_URL to fallowing configuration:
-DB_URL=jdbc:postgresql://postgres-db:5432/jira
-# In order to run docker-compose, please execute following script:
-docker-compose --env-file ./localhost.env up -d
-# URL to check that application is running:
-localhost:8082
+# Introduction
+This application is not created from scratch by myself. I've implemented some features which are described bellow.
+
+# Technologies Used
+- Spring Boot
+- Spring JPA
+- Hibernate
+- PostgreSQL
+- Liquibase
+- Spring Security
+- Spring MVC
+- Thymeleaf
+- jQuery
+- Swagger
+- Lombok
+- Mapstruct
+- Spring Test
+- JUnit
+- Docker
+
+# Implemented Features
+- removed from application vk and yandex social media
+- moved all sensitive information to the .env file
+- changed testing DB from PostgresQL to H2 in-memory DB
+- added test methods for ProfileRestController class
+- refactored com.javarush.jira.bugtracking.attachment.FileUtil#upload method to use a modern approach working with a file system
+- added new functionality to add TAG to TASK entities, only the backend part
+- added new functionality to count the time taken to work with TASK and to test TASK
+- added a docker file for the main server
+- added docker-compose file to start an application with DB and NGING server
